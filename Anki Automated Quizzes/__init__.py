@@ -149,6 +149,12 @@ def _notes_to_qa(notes, prompt_field, answer_field, required_model_name=None):
             continue
         front = (n[prompt_field] or "").strip()
         back = (n[answer_field] or "").strip()
+        # Scale IMG
+        front = re.sub(
+            r"<img ", "<img style=\"max-width: 100%; height: auto;\" ", front)
+        back = re.sub(
+            r"<img ", "<img style=\"max-width: 100%; height: auto;\" ", back)
+        #
         if front and back:
             qa.append({"nid": nid, "prompt": front, "answer": back})
     return qa
@@ -233,10 +239,6 @@ class OptionRow(QWidget):
         self.label.setOpenExternalLinks(True)
         self.label.setWordWrap(True)
 
-        # Scale IMG
-        self.raw_html = re.sub(
-            r"<img ", "<img style=\"max-width: 100%; height: auto;\" ", self.raw_html)
-        #
         # Render raw HTML; if actually empty, show a placeholder
         self.label.setText(
             self.raw_html if self.raw_html.strip() else "<i>(blank)</i>")
