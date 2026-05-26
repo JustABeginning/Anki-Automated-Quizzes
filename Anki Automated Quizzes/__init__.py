@@ -150,10 +150,10 @@ def _notes_to_qa(notes, prompt_field, answer_field, required_model_name=None):
         front = (n[prompt_field] or "").strip()
         back = (n[answer_field] or "").strip()
         # Scale IMG
-        front = re.sub(
-            r"<img ", "<img style=\"max-width: 100%; height: auto;\" ", front)
-        back = re.sub(
-            r"<img ", "<img style=\"max-width: 100%; height: auto;\" ", back)
+        front = front.replace(
+            "<img ", '<img style="max-width: 100%; height: auto;" ')
+        back = back.replace(
+            "<img ", '<img style="max-width: 100%; height: auto;" ')
         #
         if front and back:
             qa.append({"nid": nid, "prompt": front, "answer": back})
